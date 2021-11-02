@@ -11,6 +11,6 @@ namespace GetYourKnowledge.Core.Services
     /// </summary>
     public class LibreTranslateService
     {
-        public HttpClient Client { get; }
+        private readonly HttpClient _client;
     }
 }

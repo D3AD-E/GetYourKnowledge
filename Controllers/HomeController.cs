@@ -1,4 +1,5 @@
-﻿using GetYourKnowledge.Models;
+﻿using GetYourKnowledge.Core.Services;
+using GetYourKnowledge.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,9 +14,12 @@ namespace GetYourKnowledge.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly AdviceSlipService _adviceSlipService;
+
+        public HomeController(ILogger<HomeController> logger, AdviceSlipService adviceSlipService)
         {
             _logger = logger;
+            _adviceSlipService = adviceSlipService;
         }
 
         public IActionResult Index()
@@ -25,7 +29,7 @@ namespace GetYourKnowledge.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult GetQuotes([Bind("Amount")] InputAdviceAmountModel model)
+        public async Task<IActionResult> GetQuotesAsync([Bind("Amount")] InputAdviceAmountModel model)
         {
             if(ModelState.IsValid)
             {
