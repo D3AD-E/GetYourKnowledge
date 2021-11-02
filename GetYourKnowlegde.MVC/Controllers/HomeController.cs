@@ -15,11 +15,14 @@ namespace GetYourKnowledge.MVC.Controllers
         private readonly ILogger<HomeController> _logger;
 
         private readonly AdviceSlipService _adviceSlipService;
+        private readonly LibreTranslateService _libreTranslateService;
 
-        public HomeController(ILogger<HomeController> logger, AdviceSlipService adviceSlipService)
+        public HomeController(ILogger<HomeController> logger, 
+            AdviceSlipService adviceSlipService, LibreTranslateService libreTranslateService)
         {
             _logger = logger;
             _adviceSlipService = adviceSlipService;
+            _libreTranslateService = libreTranslateService;
         }
 
         public IActionResult Index()
@@ -33,7 +36,9 @@ namespace GetYourKnowledge.MVC.Controllers
         {
             if(ModelState.IsValid)
             {
+                var advices = _adviceSlipService.GetAdvices(model.Amount);
 
+                var 
             }
             return View("Index",model);
         }

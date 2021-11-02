@@ -51,6 +51,7 @@ namespace GetYourKnowledge.MVC.Core.Services
                 Source = from.Value,
                 Target = to.Value
             };
+
             var httpResponse = await _client.PostAsJsonAsync("/translate", request);
 
             var libreResponse = await httpResponse.Content.ReadFromJsonAsync<LibreTranslateServiceResponse>();
