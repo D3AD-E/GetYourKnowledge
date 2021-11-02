@@ -1,6 +1,6 @@
 using System;
 
-namespace GetYourKnowledge.Models
+namespace GetYourKnowledge.MVC.Models
 {
     public class ErrorViewModel
     {

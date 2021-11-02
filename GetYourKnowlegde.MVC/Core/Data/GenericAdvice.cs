@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GetYourKnowledge.Core.Data
+namespace GetYourKnowledge.MVC.Core.Data
 {
     public class GenericAdvice
     {

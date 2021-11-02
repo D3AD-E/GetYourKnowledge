@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace GetYourKnowledge.Core.Services
+namespace GetYourKnowledge.MVC.Core.Services
 {
     /// <summary>
     /// LibreTranslateService is used for translating advices from English to Polish

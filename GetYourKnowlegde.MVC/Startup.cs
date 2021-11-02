@@ -1,4 +1,4 @@
-using GetYourKnowledge.Core.Services;
+using GetYourKnowledge.MVC.Core.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GetYourKnowledge
+namespace GetYourKnowledge.MVC
 {
     public class Startup
     {

@@ -1,4 +1,4 @@
-﻿using GetYourKnowledge.Core.Data;
+﻿using GetYourKnowledge.MVC.Core.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace GetYourKnowledge.Core.Services
+namespace GetYourKnowledge.MVC.Core.Services
 {
     /// <summary>
     /// AdviceSlipService is used for getting JSON of advices in English

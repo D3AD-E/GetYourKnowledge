@@ -1,5 +1,5 @@
-﻿using GetYourKnowledge.Core.Services;
-using GetYourKnowledge.Models;
+﻿using GetYourKnowledge.MVC.Core.Services;
+using GetYourKnowledge.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GetYourKnowledge.Controllers
+namespace GetYourKnowledge.MVC.Controllers
 {
     public class HomeController : Controller
     {
