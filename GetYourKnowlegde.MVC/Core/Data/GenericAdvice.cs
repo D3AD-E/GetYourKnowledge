@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GetYourKnowledge.MVC.Core.Data
 {
-    public class GenericAdvice
+    public record GenericAdvice
     {
         public int Id { get; set; }
 

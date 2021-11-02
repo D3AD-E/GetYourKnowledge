@@ -38,7 +38,36 @@ namespace GetYourKnowledge.MVC.Core.Services
 
         public async Task<IEnumerable<GenericAdvice>> GetAdvices(int amount)
         {
-            throw new NotImplementedException();
+            var taskList = new List<Task<GenericAdvice>>();
+
+            for (int i = 0; i < amount; i++)
+            {
+                taskList.Add(GetAdvice());
+            }
+
+            //concurrent running of {amount} requests, not parallel!
+            try
+            {
+                var advices =  (await Task.WhenAll(taskList)).AsEnumerable();
+                var disctinctAdvices = advices.Distinct();
+                var difference = advices.Count() - disctinctAdvices.Count(); //if we have duplicates, difference would > 0
+                while (difference != 0)
+                {
+                    advices = disctinctAdvices;
+                    var additionalAdvices = await GetAdvices(difference); //get remaining advices to fill up to the amount, we know we will get the distinct ones
+                    foreach (var advice in additionalAdvices)
+                    {
+                        advices = advices.Append(advice);
+                    }
+                    disctinctAdvices = advices.Distinct();
+                    difference = advices.Count() - disctinctAdvices.Count();//check if there are duplicates amoung new and old advices
+                }
+                return advices;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
     }
 }
