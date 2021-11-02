@@ -1,0 +1,13 @@
+﻿@model IEnumerable<GetYourKnowledge.MVC.Models.AdviceWithTranslationModel>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+<p>Your @Model.Count() advices</p>
+<ul class="list-group">
+    @foreach (var advice in Model)
+    {
+        <li class="list-group-item">@advice.Id ) @advice.Advice <br />@advice.Translation</li>
+    }
+</ul>
+<a class="btn btn-primary" asp-action="Index">Back</a>

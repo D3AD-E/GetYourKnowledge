@@ -1,4 +1,5 @@
-﻿using GetYourKnowledge.MVC.Core.Services;
+﻿using GetYourKnowledge.MVC.Core.Data;
+using GetYourKnowledge.MVC.Core.Services;
 using GetYourKnowledge.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -6,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace GetYourKnowledge.MVC.Controllers
@@ -36,11 +38,43 @@ namespace GetYourKnowledge.MVC.Controllers
         {
             if(ModelState.IsValid)
             {
-                var advices = _adviceSlipService.GetAdvices(model.Amount);
+                var advices = await _adviceSlipService.GetAdvices(model.Amount);
+                //it is better to have 1 request with long translation rather than 20 requests with short
+                var translationStringBuilder = new StringBuilder(); 
 
-                var 
+                foreach (var advice in advices)
+                {
+                    translationStringBuilder.AppendLine(advice.Advice);
+                }
+
+                var translationsSpan = await _libreTranslateService.TranslateAsync(translationStringBuilder.ToString(), 
+                    LanguageType.English, LanguageType.Polish);
+
+                var translations = translationsSpan.Split('\n');
+
+                //translation length must be 1 more than of advices, due to appendline
+                //it cound be fixed by checking whether we have reached the last enement and if so, appeding, insted of appending of newline
+                //but this is more efficient
+                if (translations.Length != advices.Count()+1)
+                {
+                    throw new Exception("Length mismatch");
+                }
+
+                var advicesModel = new List<AdviceWithTranslationModel>();
+
+                int i = 0;
+                foreach (var advice in advices)
+                {
+                    var adviceModel = new AdviceWithTranslationModel(advice)
+                    {
+                        Translation = translations[i++]
+                    };
+                    advicesModel.Add(adviceModel);
+                }
+
+                return View("Advices", advicesModel.OrderBy(x => x.Id));
             }
-            return View("Index",model);
+            return View("Index", model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
