@@ -23,9 +23,15 @@ namespace GetYourKnowledge.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult GetQuotes([Bind("Amount")] InputAdviceAmountModel model)
         {
-            return View();
+            if(ModelState.IsValid)
+            {
+
+            }
+            return View("Index",model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
