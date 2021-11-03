@@ -16,15 +16,13 @@ namespace GetYourKnowledge.MVC.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        private readonly AdviceSlipService _adviceSlipService;
-        private readonly LibreTranslateService _libreTranslateService;
+        private readonly AdviceService _adviceService;
 
         public HomeController(ILogger<HomeController> logger, 
-            AdviceSlipService adviceSlipService, LibreTranslateService libreTranslateService)
+            AdviceService adviceService)
         {
             _logger = logger;
-            _adviceSlipService = adviceSlipService;
-            _libreTranslateService = libreTranslateService;
+            _adviceService = adviceService;
         }
 
         public IActionResult Index()
@@ -39,46 +37,7 @@ namespace GetYourKnowledge.MVC.Controllers
             if(ModelState.IsValid)
             {
                 int amount = model.Amount.GetValueOrDefault();
-                var advices = await _adviceSlipService.GetAdvices(amount);
-
-                if(advices is null)
-                {
-                    throw new APIException("AdviceSlip API error");
-                }
-
-                //it is better to have 1 request with long translation rather than 20 requests with short
-                var translationStringBuilder = new StringBuilder(); 
-
-                foreach (var advice in advices)
-                {
-                    translationStringBuilder.AppendLine(advice.Advice);
-                }
-
-                var translationsSpan = await _libreTranslateService.TranslateAsync(translationStringBuilder.ToString(), 
-                    LanguageType.English, LanguageType.Polish);
-
-                var translations = translationsSpan.Split('\n');
-
-                //translation length must be 1 more than of advices, due to appendline
-                //it cound be fixed by checking whether we have reached the last element and if so, appeding, instead of appending of newline
-                //but this is more efficient
-                if (translations.Length != advices.Count()+1)
-                {
-                    throw new APIException("Failed to get correct translation from LibreTranslate");
-                }
-
-                var advicesModel = new List<AdviceWithTranslationModel>();
-
-                int i = 0;
-                foreach (var advice in advices)
-                {
-                    var adviceModel = new AdviceWithTranslationModel(advice)
-                    {
-                        Translation = translations[i++]
-                    };
-                    advicesModel.Add(adviceModel);
-                }
-
+                var advicesModel = await _adviceService.GetAdvicesWithTranslationAsync(amount);
                 return View("Advices", advicesModel.OrderBy(x => x.Id));
             }
             return View("Index", model);

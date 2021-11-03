@@ -19,7 +19,7 @@ namespace GetYourKnowledge.MVC.Core.Services
             public string Source { get; set; }
             public string Target { get; set; }
 
-            public string Format { get; private set; }
+            public string Format { get; }
             public LibreTranslateServiceRequest()
             {
                 Format = "text";
