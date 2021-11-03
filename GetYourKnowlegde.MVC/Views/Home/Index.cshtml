@@ -6,13 +6,22 @@
 
 <div class="clean-block-heading">
     <h2 class="text-info">Get your advices</h2>
-    <form asp-action="GetAdvices">
+    <form asp-action="GetAdvices" id="adviceForm">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
             <label for="Amount" class="control-label">How many advices would you like to see? (5-20)</label>
             <input asp-for="Amount" class="form-control" />
             <span asp-validation-for="Amount" class="text-danger"></span>
         </div>
-        <input type="submit" class="btn btn-success" value="Get me the advices!">
+        <input type="submit" class="btn btn-success" id="submitAdvicesBtn" value="Get me the advices!">
     </form>
 </div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $("#adviceForm").submit(function (e) {
+            $("#submitAdvicesBtn").attr("disabled", true);
+        });
+    </script>
+}
