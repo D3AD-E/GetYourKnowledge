@@ -38,7 +38,8 @@ namespace GetYourKnowledge.MVC.Controllers
         {
             if(ModelState.IsValid)
             {
-                var advices = await _adviceSlipService.GetAdvices(model.Amount);
+                int amount = model.Amount.GetValueOrDefault();
+                var advices = await _adviceSlipService.GetAdvices(amount);
                 //it is better to have 1 request with long translation rather than 20 requests with short
                 var translationStringBuilder = new StringBuilder(); 
 
@@ -53,7 +54,7 @@ namespace GetYourKnowledge.MVC.Controllers
                 var translations = translationsSpan.Split('\n');
 
                 //translation length must be 1 more than of advices, due to appendline
-                //it cound be fixed by checking whether we have reached the last enement and if so, appeding, insted of appending of newline
+                //it cound be fixed by checking whether we have reached the last enement and if so, appeding, instead of appending of newline
                 //but this is more efficient
                 if (translations.Length != advices.Count()+1)
                 {
