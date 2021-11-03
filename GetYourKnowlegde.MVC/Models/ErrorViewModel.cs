@@ -1,5 +1,3 @@
-using System;
-
 namespace GetYourKnowledge.MVC.Models
 {
     public class ErrorViewModel

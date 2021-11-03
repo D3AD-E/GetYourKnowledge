@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace GetYourKnowledge.MVC.Core.Data
+﻿namespace GetYourKnowledge.MVC.Core.Data
 {
     /// <summary>
     /// Available languages for translation

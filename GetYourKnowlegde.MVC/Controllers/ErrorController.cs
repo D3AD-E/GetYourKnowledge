@@ -2,11 +2,6 @@
 using GetYourKnowledge.MVC.Models;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GetYourKnowledge.MVC.Controllers
 {
@@ -17,7 +12,9 @@ namespace GetYourKnowledge.MVC.Controllers
             Response.StatusCode = 404;
             return View();
         }
-
+        /// <summary>
+        /// Should only be used in non-development env
+        /// </summary>
         public IActionResult GenericError()
         {
             var exceptionHandlerPathFeature =
