@@ -1,4 +1,5 @@
 ﻿using GetYourKnowledge.MVC.Core.Data;
+using GetYourKnowledge.MVC.Core.Data.Exceptions;
 using System;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -49,13 +50,13 @@ namespace GetYourKnowledge.MVC.Core.Services
                 Target = to.Value
             };
 
-            var httpResponse = await _client.PostAsJsonAsync("/translate", request);
+            using var httpResponse = await _client.PostAsJsonAsync("/translate", request);
 
             var libreResponse = await httpResponse.Content.ReadFromJsonAsync<LibreTranslateServiceResponse>();
 
             if(!string.IsNullOrEmpty(libreResponse.Error))
             {
-                throw new Exception(libreResponse.Error);
+                throw new APIException(libreResponse.Error);
             }
             httpResponse.EnsureSuccessStatusCode();
             return libreResponse.TranslatedText;

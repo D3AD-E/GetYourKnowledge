@@ -7,7 +7,7 @@ namespace GetYourKnowledge.MVC.Core.Data.Exceptions
     /// </summary>
     public class APIException : Exception
     {
-        public int StatusCode { get; private set; }
+        public int StatusCode { get; }
 
         public APIException()
         {

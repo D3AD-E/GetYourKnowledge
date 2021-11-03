@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace GetYourKnowledge.MVC.Core.Services
 {
+    /// <summary>
+    /// LibreTranslateService gets translated advices
+    /// </summary>
     public class AdviceService
     {
         private readonly AdviceSlipService _adviceSlipService;
@@ -51,7 +54,7 @@ namespace GetYourKnowledge.MVC.Core.Services
 
             var advicesTranslated = advices.Select((advice, index) => new AdviceWithTranslationModel(advice)
             {
-                Translation = translations[index++]
+                Translation = translations[index]
             });
 
             return advicesTranslated;

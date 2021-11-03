@@ -60,7 +60,7 @@ namespace GetYourKnowledge.MVC.Core.Services
                         advices = advices.Append(advice);
                     }
                     disctinctAdvices = advices.Distinct();
-                    difference = advices.Count() - disctinctAdvices.Count();//check if there are duplicates amoung new and old advices
+                    difference = advices.Count() - disctinctAdvices.Count();//check if there are duplicates among new and old advices
                 }
                 return advices;
             }
