@@ -1,5 +1,6 @@
 using GetYourKnowledge.MVC.Core.Data;
 using GetYourKnowledge.MVC.Core.Services;
+using GetYourKnowledge.MVC.Core.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Threading.Tasks;

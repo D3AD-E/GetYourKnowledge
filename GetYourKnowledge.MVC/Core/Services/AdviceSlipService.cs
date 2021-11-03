@@ -1,4 +1,5 @@
 ﻿using GetYourKnowledge.MVC.Core.Data;
+using GetYourKnowledge.MVC.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,9 @@ namespace GetYourKnowledge.MVC.Core.Services
 
         private readonly HttpClient _client;
 
+        private const int MaxAdvices = 224;
+        private const int MaxTries = 30;
+
         public AdviceSlipService(HttpClient client)
         {
             client.BaseAddress = new Uri("https://api.adviceslip.com/");
@@ -33,34 +37,37 @@ namespace GetYourKnowledge.MVC.Core.Services
         public async Task<GenericAdvice> GetAdvice()
         {
             var response =  await _client.GetFromJsonAsync<AdviveSlipResponse>("/advice");
-            return response.Slip;
+            return response?.Slip;
+        }
+
+        public async Task<GenericAdvice> GetAdvice(int id)
+        {
+            var response = await _client.GetFromJsonAsync<AdviveSlipResponse>($"/advice/{id}");
+            return response?.Slip;
         }
 
         public async Task<IEnumerable<GenericAdvice>> GetAdvices(int amount)
         {
-            var taskList = new List<Task<GenericAdvice>>();
-
-            for (int i = 0; i < amount; i++)
-            {
-                taskList.Add(GetAdvice());
-            }
+            var idList = RandomHelper.GetRandomRange(1, MaxAdvices+1, amount);
+            var taskList = idList.Select(id => GetAdvice(id));
 
             //concurrent running of {amount} requests, not parallel!
             try
             {
-                var advices =  (await Task.WhenAll(taskList)).AsEnumerable();
-                var disctinctAdvices = advices.Distinct();
-                var difference = advices.Count() - disctinctAdvices.Count(); //if we have duplicates, difference would be > 0
-                while (difference != 0)
+                var advices = await Task.WhenAll(taskList);
+                for (int i = 0; i < advices.Length; i++)
                 {
-                    advices = disctinctAdvices;
-                    var additionalAdvices = await GetAdvices(difference); //get remaining advices to fill up to the amount, we know we will get the distinct ones
-                    foreach (var advice in additionalAdvices)
+                    int triesAmount = 0;
+                    while(advices[i] is null)
                     {
-                        advices = advices.Append(advice);
+                        var num = RandomHelper.GetRandomNumberNotInCollection(1, MaxAdvices + 1, idList);
+                        advices[i] = await GetAdvice(num);
+                        triesAmount++;
+                        if(triesAmount>=MaxTries)
+                        {
+                            throw new TimeoutException("Could not get advices");
+                        }
                     }
-                    disctinctAdvices = advices.Distinct();
-                    difference = advices.Count() - disctinctAdvices.Count();//check if there are duplicates among new and old advices
                 }
                 return advices;
             }
