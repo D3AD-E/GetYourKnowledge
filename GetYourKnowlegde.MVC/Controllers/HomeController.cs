@@ -34,7 +34,7 @@ namespace GetYourKnowledge.MVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> GetQuotesAsync([Bind("Amount")] InputAdviceAmountModel model)
+        public async Task<IActionResult> GetAdvicesAsync([Bind("Amount")] InputAdviceAmountModel model)
         {
             if(ModelState.IsValid)
             {
