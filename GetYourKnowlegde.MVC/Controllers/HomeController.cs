@@ -1,7 +1,9 @@
 ﻿using GetYourKnowledge.MVC.Core.Data;
+using GetYourKnowledge.MVC.Core.Data.Exceptions;
 using GetYourKnowledge.MVC.Core.Services;
 using GetYourKnowledge.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -40,6 +42,12 @@ namespace GetYourKnowledge.MVC.Controllers
             {
                 int amount = model.Amount.GetValueOrDefault();
                 var advices = await _adviceSlipService.GetAdvices(amount);
+
+                if(advices is null)
+                {
+                    throw new APIException("AdviceSlip API error");
+                }
+
                 //it is better to have 1 request with long translation rather than 20 requests with short
                 var translationStringBuilder = new StringBuilder(); 
 
@@ -54,11 +62,11 @@ namespace GetYourKnowledge.MVC.Controllers
                 var translations = translationsSpan.Split('\n');
 
                 //translation length must be 1 more than of advices, due to appendline
-                //it cound be fixed by checking whether we have reached the last enement and if so, appeding, instead of appending of newline
+                //it cound be fixed by checking whether we have reached the last element and if so, appeding, instead of appending of newline
                 //but this is more efficient
                 if (translations.Length != advices.Count()+1)
                 {
-                    throw new Exception("Length mismatch");
+                    throw new APIException("Failed to get correct translation from LibreTranslate");
                 }
 
                 var advicesModel = new List<AdviceWithTranslationModel>();

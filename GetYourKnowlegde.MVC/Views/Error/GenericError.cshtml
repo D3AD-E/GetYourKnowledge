@@ -1,0 +1,12 @@
+﻿@model GenericErrorModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="container-fluid pt-lg-5">
+    <div class="text-center mt-5">
+        <h1 class="m-0"><strong>@Model.StatusCode</strong></h1>
+        <p class="text mb-5 lead">@Model.Message</p>
+        <a class="btn btn-light btn-primary" asp-controller="Home" asp-action="Index">← Back to main page</a>
+    </div>
+</div>

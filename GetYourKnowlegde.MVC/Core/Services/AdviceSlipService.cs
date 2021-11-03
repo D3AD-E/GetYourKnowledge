@@ -50,7 +50,7 @@ namespace GetYourKnowledge.MVC.Core.Services
             {
                 var advices =  (await Task.WhenAll(taskList)).AsEnumerable();
                 var disctinctAdvices = advices.Distinct();
-                var difference = advices.Count() - disctinctAdvices.Count(); //if we have duplicates, difference would > 0
+                var difference = advices.Count() - disctinctAdvices.Count(); //if we have duplicates, difference would be > 0
                 while (difference != 0)
                 {
                     advices = disctinctAdvices;

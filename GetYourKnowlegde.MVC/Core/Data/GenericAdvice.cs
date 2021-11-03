@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace GetYourKnowledge.MVC.Core.Data
 {
+    /// <summary>
+    /// Base class for advice model
+    /// </summary>
     public record GenericAdvice
     {
         public int Id { get; set; }

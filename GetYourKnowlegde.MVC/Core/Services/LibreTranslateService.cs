@@ -47,7 +47,7 @@ namespace GetYourKnowledge.MVC.Core.Services
         {
             var request = new LibreTranslateServiceRequest
             {
-                Q=text,
+                Q = text,
                 Source = from.Value,
                 Target = to.Value
             };

@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace GetYourKnowledge.MVC.Core.Data
 {
+    /// <summary>
+    /// Available languages for translation
+    /// </summary>
     public class LanguageType
     {
         private LanguageType(string language)
