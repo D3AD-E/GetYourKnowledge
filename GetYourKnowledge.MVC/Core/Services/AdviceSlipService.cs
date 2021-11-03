@@ -62,6 +62,7 @@ namespace GetYourKnowledge.MVC.Core.Services
                     {
                         var num = RandomHelper.GetRandomNumberNotInCollection(1, MaxAdvices + 1, idList);
                         advices[i] = await GetAdvice(num);
+                        idList = idList.Append(num);
                         triesAmount++;
                         if(triesAmount>=MaxTries)
                         {
